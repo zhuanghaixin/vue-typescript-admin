@@ -10,6 +10,17 @@ Vue.use(VueRouter)
     name: 'Home',
     component: Home
   },
+    {
+      path: '/login',
+      name: 'Login',
+      component: ()=>import("@/views/Login/Login.vue")
+    },
+    {
+      path: '/password',
+      name: 'Passwrod',
+      component: ()=>import("@/views/Login/Password.vue")
+    },
+
 ]
 
 const router = new VueRouter({

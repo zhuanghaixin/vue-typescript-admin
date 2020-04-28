@@ -17,7 +17,7 @@ Vue.use(VueRouter)
     },
     {
       path: '/password',
-      name: 'Passwrod',
+      name: 'Password',
       component: ()=>import("@/views/Login/Password.vue")
     },
 

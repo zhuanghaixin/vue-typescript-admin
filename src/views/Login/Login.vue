@@ -7,7 +7,7 @@
                    label-position="left"
                    label-width="0px"
                    :rules="rules"
-                   ref="ruleForm"
+
            >
                <div class="title">
                    <h3>账号密码登录</h3>
@@ -64,8 +64,8 @@ import LoginHeader from './LoginHeader.vue'
         // 表单填写的各个属性
         @Provide() ruleForm: {
             //存储的数据类型
-            username: String;
-            pwd: String;
+            username: string;
+            pwd: string;
             autoLogin: boolean;
         } = {
             //存储的值

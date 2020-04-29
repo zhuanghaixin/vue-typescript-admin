@@ -1,6 +1,6 @@
 import axios, {AxiosResponse, AxiosRequestConfig} from 'axios';
 import {Message} from 'element-ui'
-import router from '@/router'
+import router from '@/router/router'
 /**
  * http请求工具类
  *

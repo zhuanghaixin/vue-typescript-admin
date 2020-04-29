@@ -30,7 +30,7 @@ service.interceptors.response.use((response: AxiosResponse) => {
     if(err && err.response.status){
         switch(err.response.status){
             case 401:
-                errMsg='登录状态失效，请重新登录'
+                errMsg='登录状态失效，请重新登录';
                 break;
             case 403:
                 errMsg = '拒绝访问';

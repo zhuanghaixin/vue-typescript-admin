@@ -1,6 +1,6 @@
 import axios, {AxiosResponse, AxiosRequestConfig} from 'axios';
 import {Message} from 'element-ui'
-
+import router from '@/router'
 /**
  * http请求工具类
  *
@@ -16,6 +16,10 @@ const service = axios.create({
 
 //请求拦截
 service.interceptors.request.use((config: AxiosRequestConfig) => {
+    //再发起请求时
+    if(localStorage.tsToken) {
+        config.headers.Authorization =localStorage.tsToken
+    }
         return config
     },
     (err: any) => {
@@ -30,6 +34,9 @@ service.interceptors.response.use((response: AxiosResponse) => {
     if(err && err.response.status){
         switch(err.response.status){
             case 401:
+                //如果token过期了
+                localStorage.removeItem("tsToken")
+                router.push({name:'Login'})
                 errMsg='登录状态失效，请重新登录';
                 break;
             case 403:

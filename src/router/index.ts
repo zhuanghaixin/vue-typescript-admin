@@ -29,4 +29,19 @@ const router = new VueRouter({
   routes
 })
 
+
+//路由拦截
+router.beforeEach((to:any,from:any,next:any)=>{
+  const isLogin=localStorage.tsToken?true:false;
+  console.log('to')
+  console.log(to)
+  console.log('from')
+  console.log(from)
+  if(to.path=='/login'||to.path=="/password") {
+    next();
+  }else{
+     isLogin?next():next("/login")
+    }
+})
+
 export default router

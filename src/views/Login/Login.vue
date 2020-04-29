@@ -20,14 +20,15 @@
                    </el-input>
                </el-form-item>
 <!--               password-->
-               <el-form-item prop="password">
-                   <el-input type="text" v-model="ruleForm.password" auto-complete="off" placeholder="密码:123456">
+               <el-form-item prop="pwd">
+                   <el-input type="password" v-model="ruleForm.pwd" auto-complete="off" placeholder="密码:123456">
                        <i class="fa fa-lock"  slot="prefix"></i>
                    </el-input>
                </el-form-item>
 <!--               登录框-->
                <el-form-item>
-                   <el-button type="primary" style="width: 100%" @click.native.prevent="handleSubmit">登录</el-button>
+                   <el-button :loading="isLogin"
+                           type="primary" style="width: 100%" @click.native.prevent="handleSubmit">登录</el-button>
                </el-form-item>
 <!--               7天自动登录/忘记密码-->
                <el-form-item>
@@ -54,41 +55,47 @@ import LoginHeader from './LoginHeader.vue'
             this.$router.push({name:'Password'})
         }
 
-        handleSubmit():void{
 
-            (this.$refs["ruleForm"] as any).validate((valid:boolean)=>{
-                if(valid){
-                    console.log(this.$refs)
-                    console.log("检验通过")
-                }
-            });
-        }
+
+
+        // isLogin
+        @Provide() isLogin:boolean=false
 
         // 表单填写的各个属性
         @Provide() ruleForm: {
             //存储的数据类型
             username: String;
-            password: String;
+            pwd: String;
             autoLogin: boolean;
         } = {
             //存储的值
             username: "",
-            password: "",
+            pwd: "",
             autoLogin: true //是否自动登录
         }
         // 表单验证
         @Provide() rules={
             username:[{required:true,message:'请输入账号',trigger: 'blur' }],
-            password:[{required:true,message:'请输入密码',trigger: 'blur' }]
+            pwd:[{required:true,message:'请输入密码',trigger: 'blur' }]
         }
 
-        // handleSubmit():void{
-        //     (this.$refs["ruleForm"] as any).validate((valid:boolean)=>{
-        //       if(valid){
-        //           console.log("检验通过")
-        //       }
-        //     });
-        // }
+        handleSubmit():void{
+            (this.$refs["ruleForm"] as any).validate((valid:boolean)=>{
+              if(valid){
+                  // console.log("检验通过")
+                  this.isLogin=true;
+                  (this as any).$axios.post('/api/users/login',this.ruleForm).then((res:any)=>{
+                      this.isLogin=false;
+                      console.log(res.data)
+                      //存储token
+                      localStorage.setItem("tsToken",res.data.token)
+
+                  }).catch(()=>{
+                      this.isLogin=false;
+                  })
+              }
+            });
+        }
 
     }
 </script>

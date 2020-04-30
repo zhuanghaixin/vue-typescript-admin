@@ -21,14 +21,12 @@
             </el-dropdown>
             </el-col>
         </el-row>
-        Home
     </div>
 </template>
 
 <script lang="ts">
     import {Component,Vue} from 'vue-property-decorator'
     import { State,Getter,Mutation,Action} from 'vuex-class'
-
     @Component({
         components:{}
     })

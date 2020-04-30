@@ -7,7 +7,7 @@
                    label-position="left"
                    label-width="0px"
                    :rules="rules"
-
+                   ref="ruleForm"
            >
                <div class="title">
                    <h3>账号密码登录</h3>
@@ -43,6 +43,7 @@
 
 <script lang="ts">
 import { Component,Vue,Provide,Emit} from 'vue-property-decorator'
+import { State,Getter,Mutation,Action} from 'vuex-class'
 import LoginHeader from './LoginHeader.vue'
     @Component({
         components: {
@@ -54,13 +55,10 @@ import LoginHeader from './LoginHeader.vue'
         goPassword():void{
             this.$router.push({name:'Password'})
         }
-
-
-
-
+        //存储用户信息
+        @Action("setUser") setUser:any
         // isLogin
         @Provide() isLogin:boolean=false
-
         // 表单填写的各个属性
         @Provide() ruleForm: {
             //存储的数据类型
@@ -78,7 +76,7 @@ import LoginHeader from './LoginHeader.vue'
             username:[{required:true,message:'请输入账号',trigger: 'blur' }],
             pwd:[{required:true,message:'请输入密码',trigger: 'blur' }]
         }
-
+        //按钮提交
         handleSubmit():void{
             (this.$refs["ruleForm"] as any).validate((valid:boolean)=>{
               if(valid){
@@ -89,6 +87,8 @@ import LoginHeader from './LoginHeader.vue'
                       console.log(res.data)
                       //存储token
                       localStorage.setItem("tsToken",res.data.token)
+                      //存储到vuex中
+                      this.setUser(res.data.token)
 
                   }).catch(()=>{
                       this.isLogin=false;
@@ -96,7 +96,6 @@ import LoginHeader from './LoginHeader.vue'
               }
             });
         }
-
     }
 </script>
 

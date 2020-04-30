@@ -89,6 +89,8 @@ import LoginHeader from './LoginHeader.vue'
                       localStorage.setItem("tsToken",res.data.token)
                       //存储到vuex中
                       this.setUser(res.data.token)
+                      //登录成功，跳转
+                      this.$router.push('/')
 
                   }).catch(()=>{
                       this.isLogin=false;
@@ -96,6 +98,9 @@ import LoginHeader from './LoginHeader.vue'
               }
             });
         }
+
+
+
     }
 </script>
 

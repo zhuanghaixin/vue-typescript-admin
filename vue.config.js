@@ -18,5 +18,9 @@ module.exports={
             }
         },
         before: app => {}
+    },
+    // 路由真正按需加载
+    chainWebpack:(config)=>{
+        config.plugins.delete('prefetch')
     }
 };

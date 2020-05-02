@@ -40,11 +40,12 @@
             }
             if(command=="usercenter"){
                 console.log("个人中心")
+                this.$router.push('/userInfo')
             }
         }
-        created(){
-            console.log(this.getUser)
-        }
+        // created(){
+        //     console.log(this.getUser)
+        // }
 
     }
 </script>

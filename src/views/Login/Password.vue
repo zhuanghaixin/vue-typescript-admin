@@ -88,7 +88,7 @@
                         })
                         this.$router.push({name:'Login'})
                     }).catch((err:any)=>{
-                        this.loading=true;
+                        this.loading=false
                     });
                 }
             })

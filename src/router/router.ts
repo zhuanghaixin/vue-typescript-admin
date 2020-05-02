@@ -3,6 +3,11 @@ import VueRouter, {RouteConfig} from 'vue-router'
 import Home from '../views/Home.vue'
 import Layout from '../views/Layout/index.vue'
 
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location:any) {
+    // @ts-ignore
+    return originalPush.call(this, location).catch((err:any) => err)
+}
 
 Vue.use(VueRouter)
 /*
@@ -53,7 +58,7 @@ export const asyncRouterMap= [
             {
                 path: "/chartsData",
                 name: "ChartsData",
-                meta:{title:'表格管理',icon:'fa fa-bar-chart'},
+                meta:{title:'图表管理',icon:'fa fa-bar-chart'},
                 component: () => import("@/views/DataManage/ChartsData.vue")
             },
         ]

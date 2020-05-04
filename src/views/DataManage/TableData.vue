@@ -25,8 +25,8 @@
 
             </el-table-column>
             <el-table-column label="操作" width="180">
-                <template>
-                    <el-button size="mini">编辑</el-button>
+                <template v-slot:default="scopeProps">
+                    <el-button size="mini" @click="handleEdit(scopeProps.$index,scopeProps.row)">编辑</el-button>
                     <el-button size="mini" type="danger">删除</el-button>
                 </template>
             </el-table-column>
@@ -41,13 +41,17 @@
                     @current-change="handleCurrentChange"
             ></el-pagination>
         </div>
+        <EditDialog :dialogVisible="dialogVisible" :form="formData"></EditDialog>
     </div>
 </template>
 
 <script lang="ts">
     import {Component,Vue,Provide} from 'vue-property-decorator'
+    import EditDialog from "./EditDialog.vue"
     @Component({
-        components:{}
+        components:{
+            EditDialog
+        }
     })
 
     export default class TableData extends Vue{
@@ -57,6 +61,16 @@
         @Provide() page:number=1  //如果数据总共有100条，从1开始取数据，当前的page
         @Provide() size:number=5 //取5条数据
         @Provide() total:number=0 //总数据条数
+
+        @Provide() dialogVisible:Boolean=false;//是否展示编辑页面
+        @Provide() formData:object={  //要编辑的表单数据
+            title:'',
+            type:'',
+            level:'',
+            count:'',
+            date:''
+        }
+
 
         created(){
             this.loadData()
@@ -97,7 +111,7 @@
         }
         //加载搜索数据
         loadSearchData(){
-            (this as any).$axios(`/api/profiles/search/${this.searchVal}/${this.page}/${this.size}`).then((res:any)=>{
+            (this as any).$axios.get(`/api/profiles/search/${this.searchVal}/${this.page}/${this.size}`).then((res:any)=>{
                 console.log(res)
                 this.tableData = res.data.datas.list;
                 this.total = res.data.datas.total;
@@ -109,6 +123,16 @@
 
                 })
             })
+        }
+
+        //编辑表单
+        handleEdit(index:number,row:any){
+            console.log('index')
+            console.log(index)
+            console.log('row')
+            console.log(row)
+            this.formData=row
+            this.dialogVisible=true
         }
 
     }

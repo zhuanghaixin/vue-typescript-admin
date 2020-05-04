@@ -16,7 +16,7 @@
                <el-submenu v-else :index="item.children[0].path" :key="item.name">
                     <template slot="title">
                         <i v-if="item.meta.icon"   :class="item.meta.icon"></i>
-                        <span v-if="item.meta&&item.meta.title">{{item.children[0].meta.title}}</span>
+                        <span v-if="item.meta&&item.meta.title">{{item.meta.title}}</span>
                     </template>
                    <el-menu-item-group>
                        <el-menu-item v-for="child in item.children" :index="child.path" :key="child.name">

@@ -27,7 +27,7 @@
             <el-table-column label="操作" width="180">
                 <template v-slot:default="scopeProps">
                     <el-button size="mini" @click="handleEdit(scopeProps.$index,scopeProps.row)">编辑</el-button>
-                    <el-button size="mini" type="danger">删除</el-button>
+                    <el-button size="mini" type="danger"   @click="handleDelete(scopeProps.$index,scopeProps.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -41,7 +41,7 @@
                     @current-change="handleCurrentChange"
             ></el-pagination>
         </div>
-        <EditDialog :dialogVisible="dialogVisible" :form="formData"></EditDialog>
+        <EditDialog :dialogVisible="dialogVisible" :form="formData" @closeDialog="closeDialog"></EditDialog>
     </div>
 </template>
 
@@ -120,7 +120,6 @@
                 this.$message({
                     message: err,
                     type: "error"
-
                 })
             })
         }
@@ -135,6 +134,21 @@
             this.dialogVisible=true
         }
 
+        //关闭Dialog()
+        closeDialog(){
+            this.dialogVisible=false
+        }
+        //删除数据
+        handleDelete(index:number, row:any){
+            console.log(row._id);
+            (this as any).$axios.delete(`/api/profiles/delete/${row._id}`).then((res:any)=>{
+                this.$message({
+                    message:res.data.msg,
+                    type:"success"
+                })
+            })
+            this.tableData.splice(index,1)
+        }
     }
 </script>
 

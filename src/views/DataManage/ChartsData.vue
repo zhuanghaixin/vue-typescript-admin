@@ -8,7 +8,7 @@
                 <Charts :chartData="chartData" chartType="bar"></Charts>
             </el-tab-pane>
             <el-tab-pane label="饼图" name="pie">
-                <Charts :charttData="chartData" chartType="pie"></Charts>
+                <Charts :chartData="chartData" chartType="pie"></Charts>
             </el-tab-pane>
         </el-tabs>
     </div>

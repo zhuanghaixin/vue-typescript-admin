@@ -24,7 +24,7 @@
             <el-table-column label="上线日期"  prop="date" width="180" >
 
             </el-table-column>
-            <el-table-column label="操作" width="180">
+            <el-table-column label="操作" width="180"  v-if="getUser.key!='visitor'">
                 <template v-slot:default="scopeProps">
                     <el-button size="mini" @click="handleEdit(scopeProps.$index,scopeProps.row)">编辑</el-button>
                     <el-button size="mini" type="danger"   @click="handleDelete(scopeProps.$index,scopeProps.row)">删除</el-button>
@@ -47,6 +47,7 @@
 
 <script lang="ts">
     import {Component,Vue,Provide} from 'vue-property-decorator'
+    import { State,Getter,Mutation,Action} from 'vuex-class'
     import EditDialog from "./EditDialog.vue"
     @Component({
         components:{
@@ -55,6 +56,10 @@
     })
 
     export default class TableData extends Vue{
+        //获取当前用户
+        @Getter("user") getUser: any;
+
+
         @Provide() searchVal:string="";  //搜索框
         @Provide()tHeight:number=document.body.offsetHeight-270  //  从上边到顶部是200px 从下边到底部是70px
         @Provide() tableData:any=[]  //获取展示的表格数据

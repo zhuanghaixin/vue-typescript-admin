@@ -13,7 +13,6 @@
             <el-form-item label="请输入账号" prop="username">
                 <el-input type="text" v-model="account.username"></el-input>
             </el-form-item>
-
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="$emit('closeDialog')" size="small">取 消</el-button>
@@ -50,7 +49,7 @@
                 })
                 .catch(()=> {});
         }
-        //
+        // 将options的key和des赋值给account
         selectChange(select:string){
            this.options.map((option:any)=>{
                console.log(option)

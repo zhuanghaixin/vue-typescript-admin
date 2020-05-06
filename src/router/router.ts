@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, {RouteConfig} from 'vue-router'
 import Home from '../views/Home.vue'
 import Layout from '../views/Layout/index.vue'
+import jwt_decode from 'jwt-decode'
 
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location:any) {
@@ -139,8 +140,39 @@ router.beforeEach((to: any, from: any, next: any) => {
     if (to.path == '/login' || to.path == "/password") {
         next();
     } else {
-        isLogin ? next() : next("/login")
+        if(isLogin){
+            const decoded:any=jwt_decode(localStorage.tsToken) //解析token
+            const {key}=decoded
+            //权限判断
+            console.log('key xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+            console.log(key)
+            if(hasPermission(key,to)){
+                next()
+            }else{
+                next('/404')
+            }
+
+        }else{
+            next('/login')
+        }
+        // isLogin ? next() : next("/login")
     }
 })
+/**
+ * 判断是否有权限
+ * @param roles 当前角色
+ * @param route 当前路由对象
+ * */
+function hasPermission(roles:string,route:any){
+    if(route.meta&&route.meta.roles){
+        // 如果meta.roles是否包含角色的key值,如果包含那么就是有权限,否则无权限
+        return route.meta.roles.some((role:string)=>{
+            return  role.indexOf(roles)>=0
+        })
+        // return route.meta.roles.some((role: string) => role.indexOf(roles) >= 0);
+    }else{ //m默认不设置权限
+        return true
+    }
 
+}
 export default router

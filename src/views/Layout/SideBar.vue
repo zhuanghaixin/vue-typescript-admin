@@ -42,8 +42,13 @@
     })
     export default class SideBar extends Vue{
         @Getter("routers") getRouters:any
+        @Getter("user") xx:any
         created(){
-            // console.log(this.getRouters)
+            console.log('this.getRouters')
+            console.log(this.getRouters)
+            console.log('this.xx')
+            console.log(this.xx)
+            console.log(this)
         }
         //设置计算属性 获取过滤之后的，hidden为true,有children,且children长度为0的对象
         get filterGetRouters():any{

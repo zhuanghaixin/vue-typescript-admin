@@ -95,7 +95,7 @@
                     item.edit = false
                 })
 
-                console.log(res.data.datas)
+                // console.log(res.data.datas)
                 this.tableData = res.data.datas
 
             })
@@ -114,10 +114,10 @@
 
         //编辑表单
         handleEdit(index: number, row: any) {
-            console.log('index')
-            console.log(index)
-            console.log('row')
-            console.log(row.edit)
+            // console.log('index')
+            // console.log(index)
+            // console.log('row')
+            // console.log(row.edit)
             row.edit = true
 
         }
@@ -130,8 +130,8 @@
                     item.des = option.des;
                 }
             })
-            console.log('this.option')
-            console.log(this.options)
+            // console.log('this.option')
+            // console.log(this.options)
 
         }
 

@@ -52,7 +52,7 @@ export const asyncRouterMap= [
             {
                 path: "/formData",
                 name: "FormData",
-                meta:{title:'表单管理',icon:'fa fa-file-text-o'},
+                meta:{title:'表单管理',icon:'fa fa-file-text-o',roles:["admin","editor"]},
                 component: () => import("@/views/DataManage/FormData.vue")
             },
             {
@@ -72,7 +72,7 @@ export const asyncRouterMap= [
             {
                 path: "/accountData",
                 name: "AccountData",
-                meta:{title:'账户管理',icon:'fa fa-user-plus'},
+                meta:{title:'账户管理',icon:'fa fa-user-plus',roles:["admin"]},
                 component: () => import("@/views/UserManage/AccountData.vue")
             }
         ]

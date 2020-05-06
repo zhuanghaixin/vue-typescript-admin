@@ -148,6 +148,7 @@
                 })
             })
             this.tableData.splice(index,1)
+            this.loadData()
         }
     }
 </script>

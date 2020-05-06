@@ -13,7 +13,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="报名人数" prop="count">
-                <el-input v-model="form.count" placeholder="请输入报名人数" ></el-input>
+                <el-input v-model.number="form.count" placeholder="请输入报名人数" ></el-input>
             </el-form-item>
             <el-form-item label="上线时间" prop="date">
                 <el-date-picker
@@ -67,7 +67,7 @@
             title:[{required:true,message:'请输入课程名称',trigger: 'blur' }],
             type:[{required:true,message:'请输入课程类型',trigger: 'change' }],
             level:[{required:true,message:'请选择课程等级',trigger: 'blur' }],
-            count:[{required:true,message:'请输入正确的报名人数',trigger: 'blur' }],
+            count:[{type:'number',required:true,message:'请输入正确的报名人数',trigger: 'blur' }],
             date:[
                 {type:"string",required:true,message:'请选择上线时间',trigger: 'change' }
             ],

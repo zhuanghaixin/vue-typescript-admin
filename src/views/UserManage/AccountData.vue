@@ -1,46 +1,70 @@
 <template>
     <div class="account-data">
         <div class="add-box">
-            <el-button type="primary">新增账户</el-button>
+            <el-button type="primary" @click="addAccount">新增账户</el-button>
         </div>
-            <el-table :data="tableData" border style="width:100%">
-                <el-table-column label="角色" widht="180">
-                    <template v-slot:default="scopeProps">
-                        <span>{{scopeProps.row.role}}</span>
+        <el-table :data="tableData" border style="width:100%">
+            <el-table-column label="角色" widht="180">
+                <template v-slot:default="scopeProps">
+                    <span>{{scopeProps.row.role}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="账户" widht="180">
+                <template v-slot:default="scopeProps">
+                    <span>{{scopeProps.row.username}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="描述" widht="180">
+                <template v-slot:default="scopeProps">
+                    <span>{{scopeProps.row.des}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" width="180">
+                <template v-slot:default="scopeProps">
+                    <template v-if="scopeProps.row.username!=='admin'">
+                        <el-button size="mini" @click="handleEdit(scopeProps.$index,scopeProps.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="handleDelete(scopeProps.$index,scopeProps.row)">
+                            删除
+                        </el-button>
                     </template>
-                </el-table-column>
-                <el-table-column label="账户" widht="180">
-                    <template v-slot:default="scopeProps">
-                        <span>{{scopeProps.row.username}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="描述" widht="180">
-                    <template v-slot:default="scopeProps">
-                        <span>{{scopeProps.row.des}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" width="180">
-                    <template v-slot:default="scopeProps">
-                        <template v-if="scopeProps.row.username!=='admin'">
-                            <el-button size="mini" @click="handleEdit(scopeProps.$index,scopeProps.row)">编辑</el-button>
-                            <el-button size="mini" type="danger"   @click="handleDelete(scopeProps.$index,scopeProps.row)">删除</el-button>
-                        </template>
 
-                    </template>
-                </el-table-column>
-            </el-table>
-
+                </template>
+            </el-table-column>
+        </el-table>
+        <AddAccount :dialogVisible="dialogVisible" :options="options" @update="getData"  @closeDialog="closeDialog"></AddAccount>
     </div>
 </template>
 
 <script lang="ts">
     import {Component, Vue, Provide} from 'vue-property-decorator'
+    import AddAccount from './AddAccount.vue'
 
     @Component({
-        components: {}
+        components: {
+            AddAccount
+        }
     })
     export default class AccountData extends Vue {
         @Provide() tableData: any = [];
+        @Provide() dialogVisible: Boolean = false;//是否展示编辑页面
+        //select数据
+        @Provide() options: any = [
+            {
+                key: 'admin',
+                role: '管理员',
+                des: 'Super Administrator. Have access to view all pages.'
+            },
+            {
+                key: 'editor',
+                role: '客服',
+                des: 'Normal Editor. Can see all pages except permission page'
+            },
+            {
+                key: 'visitor',
+                role: '游客',
+                des: 'Just a visitor. Can only see the home page and the document page'
+            }
+        ]
 
         created() {
             this.getData()
@@ -54,8 +78,20 @@
 
             })
         }
+
+        //新增账户
+        addAccount() {
+            this.dialogVisible = true
+        }
+
+        //关闭Dialog
+        closeDialog(){
+            console.log(111111111)
+            this.dialogVisible = false
+        }
+
         //编辑表单
-        handleEdit(index:number,row:any){
+        handleEdit(index: number, row: any) {
             console.log('index')
             console.log(index)
             console.log('row')
@@ -65,15 +101,20 @@
 
 
         //删除数据
-        handleDelete(index:number, row:any){
+        handleDelete(index: number, row: any): void {
+            // 删除
             console.log(row._id);
-            (this as any).$axios.delete(`/api/profiles/delete/${row._id}`).then((res:any)=>{
-                this.$message({
-                    message:res.data.msg,
-                    type:"success"
-                })
-            })
-            this.tableData.splice(index,1)
+            (this as any).$axios
+                .delete(`/api/users/deleteUser/${row._id}`)
+                .then((res: any) => {
+                    this.$message({
+                        message: res.data.msg,
+                        type: "success"
+                    });
+
+                    this.tableData.splice(index, 1);
+                    this.getData()
+                });
         }
     }
 </script>
@@ -82,6 +123,7 @@
     .account-data {
         height: 100%;
         overflow: auto;
+
         .add-box {
             margin-bottom: 10px;
         }
